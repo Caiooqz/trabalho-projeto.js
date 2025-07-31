@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechControl 3.0 Sistema de Gerenciamento</title>
+</head>
+<body>
+    <!-- Tela de Login -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-left">
+            <div class="system-title">TechControl 3.0</div>
+            <div class="system-subtitle">Gerenciamento e Controle</div>
+
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <input type="email" class="form-input" placeholder="exemplo@gmail.com" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-input" placeholder="Senha" id="loginPassword" required>
+                </div>
+                <button type="submit" class="login-btn">Entrar</button>
+                <div class="register-link">Não possui uma conta? Cadastre-se</div>
+            </form>
+        </div>
+    
+        <div class="login-right">
+            <div class="tech-header">TechControl 3.0</div>
+            <div class="globe-icon">🌍</div>
+        </div>
+    </div>
+
+    <!-- Tela de Dashboard -->
+    <div id="dashboardScreen" class="dashboard">
+        <div class="sidebar">
+            <div class="profile">
+                <div class="profile-picture"></div>
+                <div class="profile-name">Administrador</div>
+                <div class="profile-role">Perfil Administrador</div>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a class="nav-link active" data-section="dashboard"></a>
+                    <span class="nav-icon">📊</span>
+                    Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-section="products">
+                        <span class="nav-icon">📦</span>
+                        Lista de Produtos
+                    </a>
+                </li>
+            </ul>
+
+            <button class="logout-btn" id="logoutBtn">Sair</button>
+        </div>
+
+        <div class="main-content">
+            <div class="top-bar">
+                <div></div>
+                <div class="top-icons">
+                    <button class="icon-btn">🔔 Notificações</button>
+                    <button class="icon-btn">⚙️ Configurações</button>
+                </div>
+            </div>
+
+            <!-- Dashboard Section -->
+             <div id="dashboardSection" class="dashboard-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalStock">200</div>
+                        <div class="stat-label">Estoque Total</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="categoryBStock">100</div>
+                        <div class="stat-label">Estoque Categoria B</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalValue">R$15.000,00</div>
+                        <div class="stat-label">Valor Total do Estoque</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalProducts">50</div>
+                        <div class="stat-label">Produtos Cadastrados</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Section -->
+            <div id="productsSection" class="product-section">
+                <div class="section-header">
+                    <h2 class="section-title">Lista de Produtos</h2>
+                    <button class="btn-primary" id="addProductBtn">Adicionar Produto</button>
+                </div>
+
+                <div class="product-table">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Descrição</th>
+                                <th>Estoque</th>
+                                <th>Valor</th>
+                                <th>Categoria</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productTableBody">
+                            <tr>
+                                <td>1</td>
+                                <td>Notebook Dell Inspiron 15</td>
+                                <td>100</td>
+                                <td>R$5.000,00</td>
+                                <td>Categoria B</td>
+                                <td>
+                                    <div class="action-menu">
+                                        <button class="action-btn" onclick="toggleActionMenu(this)">⋮</button>
+                                        <div class="action-dropdown">
+                                            <a class="dropdown-item" onclick="editProduct(1)">✏️ Editar</a>
+                                            <a class="dropdown-item" onclick="deleteProduct(1)">🗑️ Excluir</a>
+                                            <a class="dropdown-item">👁️ Vender</a>
+                                            <a class="dropdown-item">🛒 Comprar</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Mouse Logitech G PRO X</td>
+                                <td>100</td>
+                                <td>R$800,00</td>
+                                <td>Categoria A</td>
+                                <td>
+                                    <div class="action-menu">
+                                        <button class="action-btn" onclick="toggleActionMenu(this)">⋮</button>
+                                        <div class="action-dropdown">
+                                            <a class="dropdown-item" onclick="editProduct(2)">✏️ Editar</a>
+                                            <a class="dropdown-item" onclick="deleteProduct(2)">🗑️ Excluir</a>
+                                            <a class="dropdown-item">👁️ Vender</a>
+                                            <a class="dropdown-item">🛒 Comprar</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Teclado Mecânico Corsair K95</td>
+                                <td>100</td>
+                                <td>R$1.000,00</td>
+                                <td>Categoria B</td>
+                                <td>
+                                    <div class="action-menu">
+                                        <button class="action-btn" onclick="toggleActionMenu(this)">⋮</button>
+                                        <div class="action-dropdown">
+                                            <a class="dropdown-item" onclick="editProduct(3)">✏️ Editar</a>
+                                            <a class="dropdown-item" onclick="deleteProduct(3)">🗑️ Excluir</a>
+                                            <a class="dropdown-item">👁️ Vender</a>
+                                            <a class="dropdown-item">🛒 Comprar</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Product Form Section -->
+            <div id="productFormSection" class="product-form-section">
+                <div class="section-header">
+                    <h2 class="section-title" id="formTitle">Cadastro de Produto</h2>
+                </div>
+
+                <div class="form-container">
+                    <form id="productForm">
+                        <input type="hidden" id="productId">
+
+                        <div class="form-row">
+                            <div>
+                                <label class="form-label">Código</label>
+                                <input type="text" class="form-control" id="productCode" required>
+                            </div>
+                            <div>
+                                <label class="form-label">Descrição</label>
+                                <input type="text" class="form-control" id="productDescription" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div>
+                                <label class="form-label">Estoque Inicial</label>
+                                <input type="text" class="form-control" id="productValue" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row full">
+                            <div>
+                                <label class="form-label">Categoria</label>
+                                <select class="form-control" id="productCategory" required>
+                                    <option value="">Selecione uma categoria</option>
+                                    <option value="A">Categoria A</option>
+                                    <option value="B">Categoria B</option>
+                                    <option value="C">Categoria C</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" id="cancelBtn">Cancelar</button>
+                            <button type="submit" class="btn-primary">Salvar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
