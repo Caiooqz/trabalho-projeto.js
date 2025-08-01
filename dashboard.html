@@ -18,7 +18,7 @@
             overflow: hidden;
         }
 
-        /* Login Screen */
+        /* Tela de Login */
         .login-container {
             display: flex;
             height: 100vh;
@@ -138,7 +138,7 @@
             margin-top: 50px;
         }
 
-        /* Dashboard */
+        /* Dashboard Principal */
         .dashboard {
             display: none;
             height: 100vh;
@@ -263,7 +263,7 @@
             font-size: 0.9rem;
         }
 
-        /* Product List */
+        /* Lista de Produtos */
         .product-section {
             display: none;
         }
@@ -297,7 +297,7 @@
         .product-table {
             background: #34495e;
             border-radius: 8px;
-            overflow: hidden;
+            overflow: visible;
         }
 
         .table {
@@ -360,6 +360,8 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
             display: none;
             z-index: 1000;
+            min-width: 120px;
+            white-space: nowrap;
         }
 
         .action-dropdown.show {
@@ -380,7 +382,7 @@
             background: #34495e;
         }
 
-        /* Product Form */
+        /* Formulário de Produtos */
         .product-form-section {
             display: none;
         }
@@ -467,7 +469,7 @@
     </style>
 </head>
 <body>
-    <!-- Login Screen -->
+    <!-- Tela de Login -->
     <div id="loginScreen" class="login-container">
         <div class="login-left">
             <div class="system-title">TechControl</div>
@@ -491,7 +493,7 @@
         </div>
     </div>
 
-    <!-- Dashboard -->
+    <!-- Dashboard Principal -->
     <div id="dashboardScreen" class="dashboard">
         <div class="sidebar">
             <div class="profile">
@@ -527,7 +529,7 @@
                 </div>
             </div>
 
-            <!-- Dashboard Section -->
+            <!-- Seção Dashboard -->
             <div id="dashboardSection" class="dashboard-section">
                 <div class="stats-grid">
                     <div class="stat-card">
@@ -549,7 +551,7 @@
                 </div>
             </div>
 
-            <!-- Products Section -->
+            <!-- Seção de Produtos -->
             <div id="productsSection" class="product-section">
                 <div class="section-header">
                     <h2 class="section-title">Lista de Produtos</h2>
@@ -628,7 +630,7 @@
                 </div>
             </div>
 
-            <!-- Product Form Section -->
+            <!-- Seção Formulário de Produtos -->
             <div id="productFormSection" class="product-form-section">
                 <div class="section-header">
                     <h2 class="section-title" id="formTitle">Cadastro de Produto</h2>
@@ -686,11 +688,12 @@
         // Sistema de dados em memória
         let products = [
             { id: 1, code: '1', description: 'Notebook Dell Inspiron', stock: 100, value: 2500, category: 'Categoria A' },
-            { id: 2, code: '2', description: 'Mouse Logitech MX', stock: 50, value: 150, category: 'Categoria B' },
-            { id: 3, code: '3', description: 'Teclado Mecânico RGB', stock: 25, value: 300, category: 'Categoria B' }
+            { id: 2, code: '9', description: 'Mouse Logitech MX', stock: 50, value: 150, category: 'Categoria B' },
+            { id: 3, code: '3', description: 'Teclado Mecânico RGB', stock: 25, value: 300, category: 'Categoria B' },
+            { id: 4, code: '4', description: 'Placa de Vídeo RTX 4060', stock: 20, value: 2600, category: 'Categoria C' }
         ];
 
-        let nextId = 4;
+        let nextId = 5;
         let editingProduct = null;
 
         // Sistema de Login
@@ -723,19 +726,19 @@
                 const section = this.getAttribute('data-section');
                 switchSection(section);
                 
-                // Update active link
+                // Atualiza link ativo
                 document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
                 this.classList.add('active');
             });
         });
 
         function switchSection(section) {
-            // Hide all sections
+            // Esconde todas as seções
             document.getElementById('dashboardSection').style.display = 'none';
             document.getElementById('productsSection').style.display = 'none';
             document.getElementById('productFormSection').style.display = 'none';
             
-            // Show selected section
+            // Mostra a seção selecionada
             if (section === 'dashboard') {
                 document.getElementById('dashboardSection').style.display = 'block';
                 updateDashboard();
@@ -745,7 +748,7 @@
             }
         }
 
-        // Dashboard updates
+        // Atualização do dashboard
         function updateDashboard() {
             const totalStock = products.reduce((sum, p) => sum + p.stock, 0);
             const categoryAStock = products.filter(p => p.category === 'Categoria A').reduce((sum, p) => sum + p.stock, 0);
@@ -758,12 +761,19 @@
             document.getElementById('totalProducts').textContent = totalProducts;
         }
 
-        // Product table updates
+        // Atualização da tabela de produtos com ordenação automática
         function updateProductTable() {
+            // Ordena produtos por código (ordenação numérica)
+            const sortedProducts = [...products].sort((a, b) => {
+                const codeA = parseInt(a.code) || 0;
+                const codeB = parseInt(b.code) || 0;
+                return codeA - codeB;
+            });
+            
             const tbody = document.getElementById('productTableBody');
             tbody.innerHTML = '';
             
-            products.forEach(product => {
+            sortedProducts.forEach(product => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${product.code}</td>
@@ -787,26 +797,52 @@
             });
         }
 
-        // Action menu toggle
+        // Controle do menu de ações com posicionamento melhorado
         function toggleActionMenu(button) {
             const dropdown = button.nextElementSibling;
+            const rect = button.getBoundingClientRect();
+            const tableContainer = button.closest('.product-table');
+            const containerRect = tableContainer.getBoundingClientRect();
             
-            // Close other dropdowns
+            // Fecha outros dropdowns
             document.querySelectorAll('.action-dropdown').forEach(d => {
                 if (d !== dropdown) d.classList.remove('show');
             });
             
             dropdown.classList.toggle('show');
+            
+            // Ajusta posição se o dropdown sair do container
+            if (dropdown.classList.contains('show')) {
+                const dropdownRect = dropdown.getBoundingClientRect();
+                
+                // Se o dropdown passar da parte inferior do container, posiciona acima do botão
+                if (dropdownRect.bottom > containerRect.bottom + 100) {
+                    dropdown.style.top = 'auto';
+                    dropdown.style.bottom = '100%';
+                } else {
+                    dropdown.style.top = '100%';
+                    dropdown.style.bottom = 'auto';
+                }
+                
+                // Se o dropdown passar da parte esquerda do container, alinha à esquerda
+                if (dropdownRect.left < containerRect.left) {
+                    dropdown.style.right = 'auto';
+                    dropdown.style.left = '0';
+                } else {
+                    dropdown.style.right = '0';
+                    dropdown.style.left = 'auto';
+                }
+            }
         }
 
-        // Close dropdowns when clicking outside
+        // Fecha dropdowns ao clicar fora
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.action-menu')) {
                 document.querySelectorAll('.action-dropdown').forEach(d => d.classList.remove('show'));
             }
         });
 
-        // Product form handling
+        // Manipulação do formulário de produtos
         document.getElementById('addProductBtn').addEventListener('click', function() {
             editingProduct = null;
             document.getElementById('formTitle').textContent = 'Cadastro de Produto';
@@ -833,11 +869,11 @@
             };
 
             if (editingProduct) {
-                // Update existing product
+                // Atualiza produto existente
                 const index = products.findIndex(p => p.id === editingProduct);
                 products[index] = { ...products[index], ...formData };
             } else {
-                // Add new product
+                // Adiciona novo produto
                 products.push({ id: nextId++, ...formData });
             }
 
@@ -845,7 +881,7 @@
             updateDashboard();
         });
 
-        // Product actions
+        // Ações dos produtos
         function editProduct(id) {
             const product = products.find(p => p.id === id);
             if (product) {
@@ -872,7 +908,7 @@
             }
         }
 
-        // Format currency input
+        // Formatação do campo de valor monetário
         document.getElementById('productValue').addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
             value = (value / 100).toFixed(2);
@@ -881,7 +917,7 @@
             e.target.value = value;
         });
 
-        // Initialize
+        // Inicialização
         updateDashboard();
         updateProductTable();
     </script>
