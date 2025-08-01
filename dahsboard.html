@@ -537,8 +537,8 @@
                         <div class="stat-label">Estoque Total</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value" id="categoryBStock">100</div>
-                        <div class="stat-label">Estoque Categoria A</div>
+                        <div class="stat-value" id="allCategoriesStock">100</div>
+                        <div class="stat-label">Estoque Todas Categorias</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-value" id="totalValue">R$ 11.000,00</div>
@@ -751,12 +751,12 @@
         // Atualização do dashboard
         function updateDashboard() {
             const totalStock = products.reduce((sum, p) => sum + p.stock, 0);
-            const categoryAStock = products.filter(p => p.category === 'Categoria A').reduce((sum, p) => sum + p.stock, 0);
+            const allCategoriesStock = products.reduce((sum, p) => sum + p.stock, 0); // Mesmo que totalStock, mas com nome mais claro
             const totalValue = products.reduce((sum, p) => sum + (p.stock * p.value), 0);
             const totalProducts = products.length;
 
             document.getElementById('totalStock').textContent = totalStock;
-            document.getElementById('categoryBStock').textContent = categoryAStock;
+            document.getElementById('allCategoriesStock').textContent = allCategoriesStock;
             document.getElementById('totalValue').textContent = `R$ ${totalValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
             document.getElementById('totalProducts').textContent = totalProducts;
         }
